@@ -97,7 +97,7 @@ const IncrementCounter = () => {
               {/* you should use the save value for the id and the property name */}
               <Input
                 id="t_annualised"
-                placeholder="100"
+                placeholder="4.23"
                 {
                 ...register("t_annualised", {
                   required: "Don't forget the time annualized",
@@ -108,18 +108,62 @@ const IncrementCounter = () => {
               <FormErrorMessage>{errors.t_annualised && errors?.t_annualised?.message}</FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={!!errors.volatility ? true : false}>
-              <FormLabel htmlFor="inflation">
-                Inflation rate (50 = 5%)
+              <FormLabel htmlFor="volatility">
+                Volatility
               </FormLabel>
               <Input
-                id="inflation"
-                placeholder="50"
+                id="volatility"
+                placeholder="15"
                 {...register("volatility", {
                   required: "please enter the implied volitility?",
                 })}
               ></Input>
               <FormErrorMessage>{errors.volatility && errors?.volatility?.message}</FormErrorMessage>
             </FormControl>
+
+            <FormControl isInvalid={!!errors.spot ? true : false}>
+              <FormLabel htmlFor="spot">
+                Spot
+              </FormLabel>
+              <Input
+                id="spot"
+                placeholder="23.1"
+                {...register("spot", {
+                  required: "please enter the spot price",
+                })}
+              ></Input>
+              <FormErrorMessage>{errors.spot && errors?.spot?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={!!errors.strike ? true : false}>
+              <FormLabel htmlFor="strike">
+                Strike
+              </FormLabel>
+              <Input
+                id="strike"
+                placeholder="23.1"
+                {...register("strike", {
+                  required: "please enter the strike price?",
+                })}
+              ></Input>
+              <FormErrorMessage>{errors.strike && errors?.strike?.message}</FormErrorMessage>
+            </FormControl>
+
+
+            <FormControl isInvalid={!!errors.rate ? true : false}>
+              <FormLabel htmlFor="rate">
+                Rate
+              </FormLabel>
+              <Input
+                id="rate"
+                placeholder="5"
+                {...register("rate", {
+                  required: "please enter the interest rate?",
+                })}
+              ></Input>
+              <FormErrorMessage>{errors.rate && errors?.rate?.message}</FormErrorMessage>
+            </FormControl>
+
             <Button mt={10} colorScheme="blue" isLoading={isSubmitting} type="submit">
               CALCULATE 🐱‍🏍
             </Button>
