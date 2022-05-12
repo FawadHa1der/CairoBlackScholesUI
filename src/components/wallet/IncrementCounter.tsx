@@ -4,17 +4,40 @@ import {
   Code,
   Link,
   Text,
-  useBreakpointValue,
+  useBreakpointValue, Divider,
+
   useColorMode,
 } from "@chakra-ui/react";
 import { Abi, stark } from "starknet";
 import { useContract, useStarknet, useStarknetInvoke } from "@starknet-react/core";
+import { FormErrorMessage, FormLabel, FormControl, Input } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 
-import CounterAbi from "../../abi/counter.json";
+
+import CounterAbi from "../../abi/black_scholes_contract.json";
+// t_annualised, volatility, spot, strike, rate
+
 
 const IncrementCounter = () => {
+  interface IScholes {
+    t_annualised: string;
+    volatility: string;
+    spot: string;
+    strike: string;
+    rate: string;
+  }
+
+  const [optionPrice, setOptionPrice] = useState<string>();
+  const [vega, setVega] = useState<string>();
+
   const CONTRACT_ADDRESS =
-    "0x036486801b8f42e950824cba55b2df8cccb0af2497992f807a7e1d9abd2c6ba1";
+    "0x02cdd33fe5d4b3ad626cdfd0efa497c21add6fa873bfec7e22f796ba9c48e354";
+  const {
+    handleSubmit, // handels the form submit event
+    register, // ties the inputs to react-form
+    formState: { errors, isSubmitting }, // gets errors and "loading" state
+  } = useForm<IScholes>();
 
   const { account } = useStarknet();
   const { contract } = useContract({
@@ -31,10 +54,14 @@ const IncrementCounter = () => {
     sm: "md",
   });
 
+  async function onRegistered(scholesInput: IScholes) {
+
+  }
+
   return (
     <Box>
       <Text as="h2" marginTop={4} fontSize="2xl">
-        Increment Counter
+        Black Scholes
       </Text>
       <Box d="flex" flexDirection="column">
         <Text>Test Contract:</Text>
@@ -53,13 +80,67 @@ const IncrementCounter = () => {
           </Link>
         </Code>
         {account && (
-          <Button
-            my={4}
-            w="fit-content"
-            onClick={() => invoke({ args: { amount: "0x1" } })}
-          >
-            Increment Counter
-          </Button>
+          <form onSubmit={handleSubmit(onRegistered)} noValidate>
+            {/* noValidate will stop the browser validation, so we can write our own designs and logic */}
+            <FormControl >
+              <FormLabel >
+                Calculate the price of your option
+                {/* the form label from chakra ui is tied to the input via the htmlFor attribute */}
+              </FormLabel>
+            </FormControl >
+            <FormControl isInvalid={!!errors.t_annualised ? true : false} >
+              <FormLabel htmlFor="t_annualised">
+                Time annualized
+                {/* the form label from chakra ui is tied to the input via the htmlFor attribute */}
+              </FormLabel>
+
+              {/* you should use the save value for the id and the property name */}
+              <Input
+                id="t_annualised"
+                placeholder="100"
+                {
+                ...register("t_annualised", {
+                  required: "Don't forget the time annualized",
+                }) /* this register function will take care of the react-form binding to the ui */
+                }
+              ></Input>
+              {/* react-form will calculate the errors on submit or on dirty state */}
+              <FormErrorMessage>{errors.t_annualised && errors?.t_annualised?.message}</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={!!errors.volatility ? true : false}>
+              <FormLabel htmlFor="inflation">
+                Inflation rate (50 = 5%)
+              </FormLabel>
+              <Input
+                id="inflation"
+                placeholder="50"
+                {...register("volatility", {
+                  required: "please enter the implied volitility?",
+                })}
+              ></Input>
+              <FormErrorMessage>{errors.volatility && errors?.volatility?.message}</FormErrorMessage>
+            </FormControl>
+            <Button mt={10} colorScheme="blue" isLoading={isSubmitting} type="submit">
+              CALCULATE 🐱‍🏍
+            </Button>
+
+            <Text
+              letterSpacing="wide"
+              textDecoration="underline"
+              as="h3"
+              fontWeight="semibold"
+              fontSize="l"
+            >
+              <Divider my="1rem" />
+
+              Option Price {optionPrice}
+              <Divider my="1rem" />
+
+              Vega {vega}
+            </Text>
+
+          </form>
+
         )}
         {!account && (
           <Box
@@ -69,7 +150,7 @@ const IncrementCounter = () => {
             borderRadius={4}
           >
             <Box fontSize={textSize}>
-              Connect your wallet to increment the counter.
+              Connect your wallet to use scholes
             </Box>
           </Box>
         )}
