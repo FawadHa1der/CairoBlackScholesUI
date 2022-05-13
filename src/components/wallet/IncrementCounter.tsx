@@ -9,27 +9,39 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Abi, stark } from "starknet";
-import { useContract, useStarknet, useStarknetInvoke } from "@starknet-react/core";
+import { useContract, useStarknet, useStarknetInvoke, useStarknetCall } from "@starknet-react/core";
 import { FormErrorMessage, FormLabel, FormControl, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useToast } from '@chakra-ui/react'
+// import { connect, getStarknet } from "@argent/get-starknet"
 
+import { getStarknet } from "get-starknet"
 
-import CounterAbi from "../../abi/black_scholes_contract.json";
+import scholesAbi from "../../abi/black_scholes_contract.json";
+import { callContract, createContract } from "utils/blockchain/starknet";
+
 // t_annualised, volatility, spot, strike, rate
 
 
 const IncrementCounter = () => {
   interface IScholes {
-    t_annualised: string;
-    volatility: string;
-    spot: string;
-    strike: string;
-    rate: string;
+    t_annualised: number;
+    volatility: number;
+    spot: number;
+    strike: number;
+    rate: number;
   }
 
-  const [optionPrice, setOptionPrice] = useState<string>();
+  const [callPrice, setCallPrice] = useState<string>();
+  const [putPrice, setPutPrice] = useState<string>();
   const [vega, setVega] = useState<string>();
+
+  // const [t_annualized, setT_annualized] = useState<string>('');
+  // const [volatility, setVolatility] = useState<string>('');
+  // const [spot, setSpot] = useState<string>('');
+  // const [strike, setStrike] = useState<string>('');
+  // const [rate, setRate] = useState<string>('');
 
   const CONTRACT_ADDRESS =
     "0x02cdd33fe5d4b3ad626cdfd0efa497c21add6fa873bfec7e22f796ba9c48e354";
@@ -40,21 +52,52 @@ const IncrementCounter = () => {
   } = useForm<IScholes>();
 
   const { account } = useStarknet();
-  const { contract } = useContract({
-    abi: CounterAbi as Abi[],
-    address: CONTRACT_ADDRESS,
-  });
-  const { invoke } = useStarknetInvoke({
-    contract,
-    method: "incrementCounter",
-  });
+  // const { contract } = useContract({
+  //   abi: scholesAbi as Abi[],
+  //   address: CONTRACT_ADDRESS,
+  // });
+
   const { colorMode } = useColorMode();
   const textSize = useBreakpointValue({
     base: "xs",
     sm: "md",
   });
 
+  // (optional) connect the wallet
+
   async function onRegistered(scholesInput: IScholes) {
+    const UNIT = 10 ** 27
+    // const { data: option_prices } = useStarknetCall({
+    //   contract,
+    //   method: "option_prices",
+    //   args: [scholesInput.t_annualised, scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate]
+    // });
+
+    scholesInput.t_annualised = scholesInput.t_annualised * UNIT
+    scholesInput.volatility = scholesInput.volatility * UNIT
+    scholesInput.spot = scholesInput.spot * UNIT
+    scholesInput.strike = scholesInput.strike * UNIT
+    scholesInput.rate = scholesInput.rate * UNIT
+
+    console.log('scholesInput   ', JSON.stringify(scholesInput))
+    // or try to connect to an approved wallet silently (on mount probably)
+    // const someconnect = connect({ showList: false })
+    const [userWalletContractAddress] = await getStarknet().enable()
+    if (getStarknet().isConnected === false) {
+      throw Error("starknet wallet not connected")
+    }
+    const contract = createContract(CONTRACT_ADDRESS, scholesAbi as any)
+    // const result = await callContract(contract, 'option_prices', BigInt(scholesInput.t_annualised).toString(), scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate)
+    const priceresult = await callContract(contract, 'option_prices', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
+    console.log('result   ', JSON.stringify(priceresult))
+    setCallPrice((parseInt(priceresult[0]) / UNIT).toString())
+    setPutPrice((parseInt(priceresult[1]) / UNIT).toString())
+
+
+    const vegaresult = await callContract(contract, 'vega', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
+    console.log('result   ', JSON.stringify(vegaresult))
+    setVega((parseInt(vegaresult[0]) / UNIT).toString())
+
 
   }
 
@@ -177,7 +220,9 @@ const IncrementCounter = () => {
             >
               <Divider my="1rem" />
 
-              Option Price {optionPrice}
+              Call Option Price {callPrice}
+              <Divider my="1rem" />
+              Put Option Price {putPrice}
               <Divider my="1rem" />
 
               Vega {vega}

@@ -27,6 +27,9 @@
     "typescript-eslint/naming-convention": 0,
     "@typescript-eslint/naming-convention": 0,
     "spaced-comment": 0,
-    "@typescript-eslint/no-empty-function": 0
+    "@typescript-eslint/no-empty-function": 0,
+    "operator-assignment": 0,
+    "radix": 0,
+    "no-param-reassign": 0
   }
 }
