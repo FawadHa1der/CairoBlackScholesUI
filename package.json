@@ -41,7 +41,8 @@
 		"react-hook-form": "^7.31.1",
 		"react-icons": "^4.3.1",
 		"starknet": "^3.9.0",
-		"use-deep-compare-effect": "^1.8.1"
+		"use-deep-compare-effect": "^1.8.1",
+		"web3": "^1.7.3"
 	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^15.0.0",

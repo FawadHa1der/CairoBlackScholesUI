@@ -20,7 +20,7 @@ import { getStarknet } from "get-starknet"
 
 import scholesAbi from "../../abi/black_scholes_contract.json";
 import { callContract, createContract } from "utils/blockchain/starknet";
-
+import { parseToUint256 } from "utils/parser";
 // t_annualised, volatility, spot, strike, rate
 
 
@@ -87,12 +87,14 @@ const IncrementCounter = () => {
       throw Error("starknet wallet not connected")
     }
     const contract = createContract(CONTRACT_ADDRESS, scholesAbi as any)
+    console.log('vega', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
     // const result = await callContract(contract, 'option_prices', BigInt(scholesInput.t_annualised).toString(), scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate)
     const priceresult = await callContract(contract, 'option_prices', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
+    //    const priceresult = await callContract(contract, 'option_prices', parseToUint256(scholesInput.t_annualised.toString()).toString(), parseToUint256(scholesInput.volatility.toString()).toString(), parseToUint256(scholesInput.spot.toString()).toString(), parseToUint256(scholesInput.strike.toString()).toString(), BigInt(scholesInput.rate).toString())
+
     console.log('result   ', JSON.stringify(priceresult))
     setCallPrice((parseInt(priceresult[0]) / UNIT).toString())
     setPutPrice((parseInt(priceresult[1]) / UNIT).toString())
-
 
     const vegaresult = await callContract(contract, 'vega', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
     console.log('result   ', JSON.stringify(vegaresult))
