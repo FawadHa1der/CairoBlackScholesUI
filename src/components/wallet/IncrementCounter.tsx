@@ -52,11 +52,13 @@ const IncrementCounter = () => {
 
   const [callDelta, setCallDelta] = useState<string>();
   const [putDelta, setPutDelta] = useState<string>();
+
   // const [t_annualized, setT_annualized] = useState<string>('');
   // const [volatility, setVolatility] = useState<string>('');
   // const [spot, setSpot] = useState<string>('');
   // const [strike, setStrike] = useState<string>('');
   // const [rate, setRate] = useState<string>('');
+
   const UNIT = 10 ** 27
 
   const CONTRACT_ADDRESS =
@@ -144,8 +146,8 @@ const IncrementCounter = () => {
     //////////////////////THETA ///////////////////////////////////////////////////////////
     const thetaResult = await callContract(contract, 'theta', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
     console.log('theta   ', JSON.stringify(thetaResult))
-    // setCallTheta(parseFelt(thetaResult[0]))
-    // setPutTheta(parseFelt(thetaResult[1]))
+    setCallTheta(parseFelt(thetaResult[0]))
+    setPutTheta(parseFelt(thetaResult[1]))
 
     //////////////////////rho ///////////////////////////////////////////////////////////
     const rhoResult = await callContract(contract, 'rho', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
