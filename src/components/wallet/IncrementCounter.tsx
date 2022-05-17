@@ -163,7 +163,7 @@ const IncrementCounter = () => {
     //////////////////////vanna  ///////////////////////////////////////////////////////////
     const vannaResult = await callContract(contract, 'vanna', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
     console.log('vanna   ', JSON.stringify(vannaResult))
-    setVanna(parseFelt(vannaResult[0]))
+    setVanna(parseFelt(vannaResult[1])) // the second one might be more accurate
 
     //////////////////////gamma  ///////////////////////////////////////////////////////////
     const gammaResult = await callContract(contract, 'gamma', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
