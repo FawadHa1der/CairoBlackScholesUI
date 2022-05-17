@@ -62,7 +62,7 @@ const IncrementCounter = () => {
   const UNIT = 10 ** 27
 
   const CONTRACT_ADDRESS =
-    "0x02cdd33fe5d4b3ad626cdfd0efa497c21add6fa873bfec7e22f796ba9c48e354";
+    "0x007c88b98020d79795aff0d6a1c3bf58ba21aee038bb2e1f87bf2923f7b76652";
   const {
     handleSubmit, // handels the form submit event
     register, // ties the inputs to react-form
