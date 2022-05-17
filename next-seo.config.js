@@ -18,7 +18,7 @@ const defaultSEOConfig = {
     site_name: "cairopal",
   },
   twitter: {
-    handle: "@a5f9t4",
+    handle: "@bowlofchilli",
     cardType: "summary_large_image",
   },
 };

@@ -1,4 +1,4 @@
-# cairopal • [![Tests](https://github.com/a5f9t4/cairopal/actions/workflows/tests.yml/badge.svg)](https://github.com/a5f9t4/cairopal/actions/workflows/tests.yml) [![Lints](https://github.com/a5f9t4/cairopal/actions/workflows/lints.yml/badge.svg)](https://github.com/a5f9t4/cairopal/actions/workflows/lints.yml) ![GitHub](https://img.shields.io/github/license/a5f9t4/cairopal) ![GitHub package.json version](https://img.shields.io/github/package-json/v/a5f9t4/cairopal) ![Vercel Deployment](https://img.shields.io/github/deployments/a5f9t4/cairopal/production?label=vercel)
+# cairopal • [![Tests](https://github.com/fawadha1der/cairopal/actions/workflows/tests.yml/badge.svg)](https://github.com/fawadha1der/cairopal/actions/workflows/tests.yml) [![Lints](https://github.com/fawadha1der/cairopal/actions/workflows/lints.yml/badge.svg)](https://github.com/fawadha1der/cairopal/actions/workflows/lints.yml) ![GitHub](https://img.shields.io/github/license/fawadha1der/cairopal) ![GitHub package.json version](https://img.shields.io/github/package-json/v/fawadha1der/cairopal) ![Vercel Deployment](https://img.shields.io/github/deployments/fawadha1der/cairopal/production?label=vercel)
 
 
 **Modern**, **Flexible** Starknet Dapp Template.
@@ -9,7 +9,7 @@
 Clone the repository
 
 ```bash
-git clone git@github.com:a5f9t4/cairopal.git
+git clone git@github.com:fawadha1der/cairopal.git
 cd cairopal
 ```
 

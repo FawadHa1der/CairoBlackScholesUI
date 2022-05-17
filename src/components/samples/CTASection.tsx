@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Link } from "@chakra-ui/react";
 import { AiFillGithub } from "react-icons/ai";
 
-const repoLink = "https://github.com/a5f9t4/cairopal";
+const repoLink = "https://github.com/fawadha1der/cairopal";
 
 const CTASection = () => {
   return (
@@ -10,7 +10,7 @@ const CTASection = () => {
         <Link
           aria-label="Deploy to Vercel"
           isExternal
-          href="https://vercel.com/import/git?s=https://github.com/a5f9t4/cairopal"
+          href="https://vercel.com/import/git?s=https://github.com/fawadha1der/cairopal"
         >
           <Image src="https://vercel.com/button" alt="Vercel deploy button" />
         </Link>
@@ -18,7 +18,7 @@ const CTASection = () => {
         <Link
           aria-label="Deploy to Netlify"
           isExternal
-          href="https://app.netlify.com/start/deploy?repository=https://github.com/a5f9t4/cairopal"
+          href="https://app.netlify.com/start/deploy?repository=https://github.com/fawadha1der/cairopal"
         >
           <Image
             src="https://www.netlify.com/img/deploy/button.svg"
@@ -30,7 +30,7 @@ const CTASection = () => {
       <Flex justifyContent="center" alignItems="center" gridGap={2}>
         <Button
           as="a"
-          href="https://github.com/a5f9t4/cairopal/generate"
+          href="https://github.com/fawadha1der/cairopal/generate"
           target="_blank"
           size="sm"
         >
@@ -48,7 +48,7 @@ const CTASection = () => {
         <Link href={repoLink} isExternal>
           <Image
             align="center"
-            src="https://img.shields.io/github/stars/a5f9t4/cairopal?style=social"
+            src="https://img.shields.io/github/stars/fawadha1der/cairopal?style=social"
             alt="github stars"
           />
         </Link>

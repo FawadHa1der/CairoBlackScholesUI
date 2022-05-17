@@ -9,7 +9,7 @@ script:
 - yarn build
 deploy:
   provider: heroku
-  repo: a5f9t4/cairopal
+  repo: fawadha1der/cairopal
   # api_key: cb0fde8c-74d4-439c-ac86-f7a2dbba0f46
   app:
     develop: cairopal-staging
