@@ -18,6 +18,28 @@ import customTheme from "styles/customTheme";
 import "styles/globals.css";
 
 const clientSideEmotionCache = createEmotionCache();
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+);
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;

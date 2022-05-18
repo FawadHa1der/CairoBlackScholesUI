@@ -14,6 +14,20 @@ import { FormErrorMessage, FormLabel, FormControl, Input } from "@chakra-ui/reac
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+
+// import our custom configuration for our chart
+import { Config } from './ChartConfig';
 // import { connect, getStarknet } from "@argent/get-starknet"
 
 import { getStarknet } from "get-starknet"
@@ -33,6 +47,20 @@ const IncrementCounter = () => {
     strike: number;
     rate: number;
   }
+
+  const [chartData, setChartData] = useState<any>({
+    labels: [1],
+    datasets: [
+      {
+        label: "Asset Price",
+        data: [1],
+        fill: true,
+        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(75,192,192,1)"
+      }
+    ]
+
+  })
 
   const [callPrice, setCallPrice] = useState<string>();
   const [putPrice, setPutPrice] = useState<string>();
@@ -105,15 +133,14 @@ const IncrementCounter = () => {
     return result.toFixed()
   }
 
-
   // (optional) connect the wallet
-  async function onRegistered(scholesInput: IScholes) {
+  async function onRegistered(scholesParams: IScholes) {
     // const { data: option_prices } = useStarknetCall({
     //   contract,
     //   method: "option_prices",
     //   args: [scholesInput.t_annualised, scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate]
     // });
-
+    let scholesInput = { ...scholesParams }
     scholesInput.t_annualised = scholesInput.t_annualised * UNIT
     scholesInput.volatility = (scholesInput.volatility / 100) * UNIT // to convert to %
     scholesInput.spot = scholesInput.spot * UNIT
@@ -167,6 +194,7 @@ const IncrementCounter = () => {
 
     //////////////////////gamma  ///////////////////////////////////////////////////////////
     const gammaResult = await callContract(contract, 'gamma', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
+    // const gammaResult = await callContract(contract, 'gamma', scholesInput.t_annualised.toString(), scholesInput.volatility.toString(), scholesInput.spot.toString(), scholesInput.strike.toString(), scholesInput.rate.toString())
     console.log('gamma   ', JSON.stringify(gammaResult))
     setGamma(parseFelt(gammaResult[0]))
 
@@ -176,6 +204,50 @@ const IncrementCounter = () => {
     setCallDelta(parseFelt(deltaResult[0]))
     setPutDelta(parseFelt(deltaResult[1]))
 
+    /////////////////////////Calculate gamma chart  //////////////////////////////////
+    async function gammachartData() {
+      let spots = []
+      let gammas = []
+      // console.log('gammachartdata')
+      let increase = 10
+      let newSpot = Number(scholesParams.spot) - 50
+      for (let i = 0; i < 10; i++) {
+        newSpot += 10
+        spots.push(newSpot)
+        const gammaResult = await callContract(contract, 'gamma', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(newSpot * UNIT).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())
+        console.log('gamma   ', JSON.stringify(gammaResult))
+        gammas.push(parseFelt(gammaResult[0]))
+      }
+
+      setChartData({
+        labels: spots,
+        datasets: [
+          {
+            label: "Asset Price",
+            data: gammas,
+            fill: true,
+            backgroundColor: "rgba(75,192,192,0.2)",
+            borderColor: "rgba(75,192,192,1)"
+          }
+        ],
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Custom Chart Title',
+              padding: {
+                top: 10,
+                bottom: 30
+              }
+            }
+          }
+        }
+
+
+      })
+    }
+
+    gammachartData()
   }
 
   return (
@@ -328,6 +400,20 @@ const IncrementCounter = () => {
               <Divider my="1rem" />
             </Text>
 
+            <Line data={chartData} options={{
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Gamma vs Spot/Asset Price',
+                  padding: {
+                    top: 10,
+                    bottom: 30
+                  }
+                }
+              }
+            }}
+
+            />
           </form>
 
         )}
