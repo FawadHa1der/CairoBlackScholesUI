@@ -38,8 +38,11 @@ import { parseToUint256 } from "utils/parser";
 import { BigNumber } from 'bignumber.js'
 // t_annualised, volatility, spot, strike, rate
 
+
 const CAIRO_PRIME = '3618502788666131213697322783095070105623107215331596699973092056135872020481'
 const IncrementCounter = () => {
+  const toast = useToast()
+
   interface IScholes {
     t_annualised: number;
     volatility: number;
@@ -140,6 +143,14 @@ const IncrementCounter = () => {
     //   method: "option_prices",
     //   args: [scholesInput.t_annualised, scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate]
     // });
+
+    toast({
+      title: "Hang tight, this might take a bit",
+      status: "success",
+      duration: 30000,
+      isClosable: false
+    });
+
     let scholesInput = { ...scholesParams }
     scholesInput.t_annualised = scholesInput.t_annualised * UNIT
     scholesInput.volatility = (scholesInput.volatility / 100) * UNIT // to convert to %
@@ -247,7 +258,8 @@ const IncrementCounter = () => {
       })
     }
 
-    gammachartData()
+    await gammachartData()
+    toast.closeAll()
   }
 
   return (
