@@ -102,8 +102,10 @@ const VGVVForm = () => {
                 return result.dividedBy(unitBigNumber).toFixed()
             }
         }
-        const result = bigFelt.dividedBy(unitBigNumber)
-        return result.toFixed()
+        const squared = bigFelt.dividedBy(unitBigNumber)
+        const result = squared.squareRoot().toFixed()
+        console.log('result of the square root', result)
+        return result;
     }
 
     // (optional) connect the wallet
@@ -143,7 +145,7 @@ const VGVVForm = () => {
         //    const priceresult = await callContract(contract, 'option_prices', parseToUint256(scholesInput.t_annualised.toString()).toString(), parseToUint256(scholesInput.volatility.toString()).toString(), parseToUint256(scholesInput.spot.toString()).toString(), parseToUint256(scholesInput.strike.toString()).toString(), BigInt(scholesInput.rate).toString())
 
         console.log('vgvvresult   ', JSON.stringify(vgvvresult))
-        setVGVV(Math.sqrt(parseInt(parseFelt(vgvvresult[0]))).toFixed())
+        setVGVV(parseFelt(vgvvresult[0]))
         toast.closeAll()
     }
 
