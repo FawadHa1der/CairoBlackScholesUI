@@ -82,7 +82,7 @@ const VGVVForm = () => {
         sm: "md",
     });
 
-    function parseFelt(feltString: string) {
+    function parseFeltAndSquareRoot(feltString: string) {
         // const feltInt = parseInt(feltString)
         const unitBigNumber = new BigNumber(UNIT)
         const bigPrime = new BigNumber(CAIRO_PRIME)
@@ -145,7 +145,7 @@ const VGVVForm = () => {
         //    const priceresult = await callContract(contract, 'option_prices', parseToUint256(scholesInput.t_annualised.toString()).toString(), parseToUint256(scholesInput.volatility.toString()).toString(), parseToUint256(scholesInput.spot.toString()).toString(), parseToUint256(scholesInput.strike.toString()).toString(), BigInt(scholesInput.rate).toString())
 
         console.log('vgvvresult   ', JSON.stringify(vgvvresult))
-        setVGVV(parseFelt(vgvvresult[0]))
+        setVGVV(parseFeltAndSquareRoot(vgvvresult[0]))
         toast.closeAll()
     }
 
