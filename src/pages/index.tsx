@@ -1,8 +1,14 @@
-import { Box } from "@chakra-ui/react";
+import {
+  Box, Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+} from "@chakra-ui/react";
 
 import CTASection from "components/samples/CTASection";
 import SomeText from "components/samples/SomeText";
-import { IncrementCounter, Transactions } from "components/wallet";
+import { IncrementCounter, Transactions, VGVVForm } from "components/wallet";
 
 const Home = () => {
   return (
@@ -10,7 +16,21 @@ const Home = () => {
       <SomeText />
       <Box flex="1 1 auto">
         <Transactions />
-        <IncrementCounter />
+        <Tabs>
+          <TabList>
+            <Tab>Black Scholes</Tab>
+            <Tab>VGVV</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <IncrementCounter />
+            </TabPanel>
+            <TabPanel>
+              <VGVVForm />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+
       </Box>
       <CTASection />
     </Box>

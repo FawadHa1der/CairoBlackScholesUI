@@ -93,7 +93,7 @@ const IncrementCounter = () => {
   const UNIT = 10 ** 27
 
   const CONTRACT_ADDRESS =
-    "0x007c88b98020d79795aff0d6a1c3bf58ba21aee038bb2e1f87bf2923f7b76652";
+    "0x079d7c55d4756f21ebe05ec79dc9aa628fd252c9f967dd9fb1107bb4dce80584";
   const {
     handleSubmit, // handels the form submit event
     register, // ties the inputs to react-form
@@ -163,7 +163,7 @@ const IncrementCounter = () => {
     // const someconnect = connect({ showList: false })
     const [userWalletContractAddress] = await getStarknet().enable()
     if (getStarknet().isConnected === false) {
-      throw Error("starknet wallet not connected")
+      //throw Error("starknet wallet not connected")
     }
     const contract = createContract(CONTRACT_ADDRESS, scholesAbi as any)
     console.log('vega', BigInt(scholesInput.t_annualised).toString(), BigInt(scholesInput.volatility).toString(), BigInt(scholesInput.spot).toString(), BigInt(scholesInput.strike).toString(), BigInt(scholesInput.rate).toString())

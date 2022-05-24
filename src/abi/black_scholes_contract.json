@@ -282,5 +282,137 @@
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "t_annualised",
+                "type": "felt"
+            },
+            {
+                "name": "k",
+                "type": "felt"
+            },
+            {
+                "name": "c_gamma",
+                "type": "felt"
+            },
+            {
+                "name": "c_vanna",
+                "type": "felt"
+            },
+            {
+                "name": "c_volga",
+                "type": "felt"
+            }
+        ],
+        "name": "vgvv",
+        "outputs": [
+            {
+                "name": "vgvv",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "t_annualised",
+                "type": "felt"
+            },
+            {
+                "name": "k",
+                "type": "felt"
+            },
+            {
+                "name": "c_gamma",
+                "type": "felt"
+            },
+            {
+                "name": "c_vanna",
+                "type": "felt"
+            },
+            {
+                "name": "c_volga",
+                "type": "felt"
+            }
+        ],
+        "name": "vgvv_a",
+        "outputs": [
+            {
+                "name": "a",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "t_annualised",
+                "type": "felt"
+            },
+            {
+                "name": "k",
+                "type": "felt"
+            },
+            {
+                "name": "c_gamma",
+                "type": "felt"
+            },
+            {
+                "name": "c_vanna",
+                "type": "felt"
+            },
+            {
+                "name": "c_volga",
+                "type": "felt"
+            }
+        ],
+        "name": "vgvv_b",
+        "outputs": [
+            {
+                "name": "b",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "t_annualised",
+                "type": "felt"
+            },
+            {
+                "name": "k",
+                "type": "felt"
+            },
+            {
+                "name": "c_gamma",
+                "type": "felt"
+            },
+            {
+                "name": "c_vanna",
+                "type": "felt"
+            },
+            {
+                "name": "c_volga",
+                "type": "felt"
+            }
+        ],
+        "name": "vgvv_c",
+        "outputs": [
+            {
+                "name": "c",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]
