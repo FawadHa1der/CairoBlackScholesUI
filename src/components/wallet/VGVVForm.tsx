@@ -63,7 +63,7 @@ const VGVVForm = () => {
     const UNIT = 10 ** 27
 
     const CONTRACT_ADDRESS =
-        "0x079d7c55d4756f21ebe05ec79dc9aa628fd252c9f967dd9fb1107bb4dce80584";
+        "0x07c74a2d7242cf5674543d2079bfea7fb6043323085c061b6a983d504df27f62";
     const {
         handleSubmit, // handels the form submit event
         register, // ties the inputs to react-form
@@ -206,7 +206,7 @@ const VGVVForm = () => {
                                 id="k"
                                 placeholder=".1678"
                                 {...register("k", {
-                                    required: "please enter the k which ln S/K?",
+                                    required: "please enter the k which ln K/S?",
                                 })}
                             ></Input>
                             <FormErrorMessage>{errors.k && errors?.k?.message}</FormErrorMessage>
