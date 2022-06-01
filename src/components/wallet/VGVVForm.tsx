@@ -143,19 +143,8 @@ const VGVVForm = () => {
         let vgvvInput = { ...vgvvParams }
 
         const bigPrime = new BigNumber(CAIRO_PRIME)
-        const halfPrimeBigNumber = bigPrime.dividedBy(2)
-        // vgvvInput.t_annualised = (new BigNumber(vgvvInput.t_annualised)).multipliedBy(UNIT).toNumber()
-        // // vgvvInput.k = -1
-        // //        const intermediate = (new BigNumber(vgvvInput.k)).multipliedBy(UNIT).absoluteValue()
-        // //        vgvvInput.k = bigPrime.minus(intermediate).toNumber() // to convert to %
-        // vgvvInput.k = parseNumberToFelt(vgvvInput.k)
-        // vgvvInput.c_gamma = (new BigNumber(vgvvInput.c_gamma)).multipliedBy(UNIT).toNumber()
-        // vgvvInput.c_vanna = parseNumberToFelt(vgvvInput.c_vanna) //(new BigNumber(vgvvInput.c_vanna)).multipliedBy(UNIT).toNumber()
-        // vgvvInput.c_volga = (new BigNumber(vgvvInput.c_volga)).multipliedBy(UNIT).toNumber() // to convert to %
 
         console.log('vgvvInput   ', JSON.stringify(vgvvInput))
-        // or try to connect to an approved wallet silently (on mount probably)
-        // const someconnect = connect({ showList: false })
         const [userWalletContractAddress] = await getStarknet().enable()
         if (getStarknet().isConnected === false) {
             //throw Error("starknet wallet not connected")
@@ -163,7 +152,7 @@ const VGVVForm = () => {
         const contract = createContract(CONTRACT_ADDRESS, scholesAbi as any)
         console.log('vgvvInput', parseNumberToFeltString(vgvvInput.t_annualised), parseNumberToFeltString(vgvvInput.k), parseNumberToFeltString(vgvvInput.c_gamma), parseNumberToFeltString(vgvvInput.c_vanna), parseNumberToFeltString(vgvvInput.c_volga))
 
-        //////////////////////OPTION PRICES ///////////////////////////////////////////////////////////
+        //////////////////////VGVV ///////////////////////////////////////////////////////////
         const vgvvresult = await callContract(contract, 'vgvv', parseNumberToFeltString(vgvvInput.t_annualised), parseNumberToFeltString(vgvvInput.k), parseNumberToFeltString(vgvvInput.c_gamma), parseNumberToFeltString(vgvvInput.c_vanna), parseNumberToFeltString(vgvvInput.c_volga))
 
         console.log('vgvvresult   ', JSON.stringify(vgvvresult))
