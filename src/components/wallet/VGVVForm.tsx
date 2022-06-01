@@ -82,7 +82,7 @@ const VGVVForm = () => {
         sm: "md",
     });
 
-    function parseFeltAndSquareRoot(feltString: string) {
+    function parseFelt(feltString: string) {
         // const feltInt = parseInt(feltString)
         const unitBigNumber = new BigNumber(UNIT)
         const bigPrime = new BigNumber(CAIRO_PRIME)
@@ -103,10 +103,27 @@ const VGVVForm = () => {
             }
         }
         const squared = bigFelt.dividedBy(unitBigNumber)
-        const result = squared.squareRoot().toFixed()
-        console.log('result of the square root', result)
-        return result;
+        return squared.toFixed();
     }
+
+    function parseNumberToFeltString(input: number) {
+        const unitBigNumber = new BigNumber(UNIT)
+        const bigPrime = new BigNumber(CAIRO_PRIME)
+        const inputBigNumber = (new BigNumber(input)).multipliedBy(unitBigNumber)
+        console.log('inputBigNumber is ', inputBigNumber.toString())
+
+        console.log('big prime  is ', bigPrime.toString())
+        if (input < 0) {
+            console.log('inputBigNumber is less than 0')
+            const inputBigNumberAbsValue = inputBigNumber.absoluteValue()
+
+            const result = bigPrime.minus(inputBigNumberAbsValue)
+            console.log('inputBigNumber in felt is ', result.toFixed())
+            return result.toFixed()
+        }
+        return inputBigNumber.toFixed()
+    }
+
 
     // (optional) connect the wallet
     async function onRegistered(vgvvParams: IVGVV) {
@@ -124,11 +141,17 @@ const VGVVForm = () => {
         });
 
         let vgvvInput = { ...vgvvParams }
-        vgvvInput.t_annualised = vgvvInput.t_annualised * UNIT
-        vgvvInput.k = vgvvInput.k * UNIT // to convert to %
-        vgvvInput.c_gamma = vgvvInput.c_gamma * UNIT
-        vgvvInput.c_vanna = vgvvInput.c_vanna * UNIT
-        vgvvInput.c_volga = vgvvInput.c_volga * UNIT // to convert to %
+
+        const bigPrime = new BigNumber(CAIRO_PRIME)
+        const halfPrimeBigNumber = bigPrime.dividedBy(2)
+        // vgvvInput.t_annualised = (new BigNumber(vgvvInput.t_annualised)).multipliedBy(UNIT).toNumber()
+        // // vgvvInput.k = -1
+        // //        const intermediate = (new BigNumber(vgvvInput.k)).multipliedBy(UNIT).absoluteValue()
+        // //        vgvvInput.k = bigPrime.minus(intermediate).toNumber() // to convert to %
+        // vgvvInput.k = parseNumberToFelt(vgvvInput.k)
+        // vgvvInput.c_gamma = (new BigNumber(vgvvInput.c_gamma)).multipliedBy(UNIT).toNumber()
+        // vgvvInput.c_vanna = parseNumberToFelt(vgvvInput.c_vanna) //(new BigNumber(vgvvInput.c_vanna)).multipliedBy(UNIT).toNumber()
+        // vgvvInput.c_volga = (new BigNumber(vgvvInput.c_volga)).multipliedBy(UNIT).toNumber() // to convert to %
 
         console.log('vgvvInput   ', JSON.stringify(vgvvInput))
         // or try to connect to an approved wallet silently (on mount probably)
@@ -138,14 +161,13 @@ const VGVVForm = () => {
             //throw Error("starknet wallet not connected")
         }
         const contract = createContract(CONTRACT_ADDRESS, scholesAbi as any)
-        console.log('vgvvInput', BigInt(vgvvInput.t_annualised).toString(), BigInt(vgvvInput.k).toString(), BigInt(vgvvInput.c_gamma).toString(), BigInt(vgvvInput.c_vanna).toString(), BigInt(vgvvInput.c_volga).toString())
+        console.log('vgvvInput', parseNumberToFeltString(vgvvInput.t_annualised), parseNumberToFeltString(vgvvInput.k), parseNumberToFeltString(vgvvInput.c_gamma), parseNumberToFeltString(vgvvInput.c_vanna), parseNumberToFeltString(vgvvInput.c_volga))
 
         //////////////////////OPTION PRICES ///////////////////////////////////////////////////////////
-        const vgvvresult = await callContract(contract, 'vgvv', BigInt(vgvvInput.t_annualised).toString(), BigInt(vgvvInput.k).toString(), BigInt(vgvvInput.c_gamma).toString(), BigInt(vgvvInput.c_vanna).toString(), BigInt(vgvvInput.c_volga).toString())
-        //    const priceresult = await callContract(contract, 'option_prices', parseToUint256(scholesInput.t_annualised.toString()).toString(), parseToUint256(scholesInput.volatility.toString()).toString(), parseToUint256(scholesInput.spot.toString()).toString(), parseToUint256(scholesInput.strike.toString()).toString(), BigInt(scholesInput.rate).toString())
+        const vgvvresult = await callContract(contract, 'vgvv', parseNumberToFeltString(vgvvInput.t_annualised), parseNumberToFeltString(vgvvInput.k), parseNumberToFeltString(vgvvInput.c_gamma), parseNumberToFeltString(vgvvInput.c_vanna), parseNumberToFeltString(vgvvInput.c_volga))
 
         console.log('vgvvresult   ', JSON.stringify(vgvvresult))
-        setVGVV(parseFeltAndSquareRoot(vgvvresult[0]))
+        setVGVV(parseFelt(vgvvresult[0]))
         toast.closeAll()
     }
 
