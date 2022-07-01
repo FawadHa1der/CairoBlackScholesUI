@@ -40,7 +40,7 @@ import { BigNumber } from 'bignumber.js'
 
 
 const CAIRO_PRIME = '3618502788666131213697322783095070105623107215331596699973092056135872020481'
-const IncrementCounter = () => {
+const BlackScholesForm = () => {
   const toast = useToast()
 
   interface IScholes {
@@ -84,11 +84,6 @@ const IncrementCounter = () => {
   const [callDelta, setCallDelta] = useState<string>();
   const [putDelta, setPutDelta] = useState<string>();
 
-  // const [t_annualized, setT_annualized] = useState<string>('');
-  // const [volatility, setVolatility] = useState<string>('');
-  // const [spot, setSpot] = useState<string>('');
-  // const [strike, setStrike] = useState<string>('');
-  // const [rate, setRate] = useState<string>('');
 
   const UNIT = 10 ** 27
 
@@ -101,10 +96,6 @@ const IncrementCounter = () => {
   } = useForm<IScholes>();
 
   const { account } = useStarknet();
-  // const { contract } = useContract({
-  //   abi: scholesAbi as Abi[],
-  //   address: CONTRACT_ADDRESS,
-  // });
 
   const { colorMode } = useColorMode();
   const textSize = useBreakpointValue({
@@ -118,17 +109,10 @@ const IncrementCounter = () => {
     const bigPrime = new BigNumber(CAIRO_PRIME)
     const halfPrimeBigNumber = bigPrime.dividedBy(2)
     const bigFelt = new BigNumber(feltString)
-    console.log('big felt is ', bigFelt.toFixed())
-    console.log('big half prime  is ', halfPrimeBigNumber.toFixed())
-
-    console.log('big prime  is ', bigPrime.toFixed())
     if (bigFelt.isGreaterThan(halfPrimeBigNumber)) {
-      console.log('big felt is bigger then cairo half prime')
       if (bigFelt.isLessThan(bigPrime)) {
-        console.log('big felt is bigger then cairo half prime and less than big prime ', bigFelt.toFixed())
 
         const result = bigFelt.minus(bigPrime)
-        console.log('felt is greater than half prime, difference is ', result.toFixed(), 'original ', bigFelt.toFixed())
         return result.dividedBy(unitBigNumber).toFixed()
       }
     }
@@ -136,13 +120,7 @@ const IncrementCounter = () => {
     return result.toFixed()
   }
 
-  // (optional) connect the wallet
   async function onRegistered(scholesParams: IScholes) {
-    // const { data: option_prices } = useStarknetCall({
-    //   contract,
-    //   method: "option_prices",
-    //   args: [scholesInput.t_annualised, scholesInput.volatility, scholesInput.spot, scholesInput.strike, scholesInput.rate]
-    // });
 
     toast({
       title: "Hang tight, this might take a bit",
@@ -446,4 +424,4 @@ const IncrementCounter = () => {
   );
 };
 
-export default IncrementCounter;
+export default BlackScholesForm;

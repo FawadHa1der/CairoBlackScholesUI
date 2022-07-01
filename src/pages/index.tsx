@@ -8,7 +8,7 @@ import {
 
 import CTASection from "components/samples/CTASection";
 import SomeText from "components/samples/SomeText";
-import { IncrementCounter, Transactions, VGVVForm } from "components/wallet";
+import { BlackScholesForm, Transactions, VGVVForm } from "components/wallet";
 
 const Home = () => {
   return (
@@ -23,7 +23,7 @@ const Home = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <IncrementCounter />
+              <BlackScholesForm />
             </TabPanel>
             <TabPanel>
               <VGVVForm />
